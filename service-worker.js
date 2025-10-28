@@ -1,13 +1,13 @@
 const CACHE_NAME = "weverse-cache-v1";
 const urlsToCache = [
-  "/WeVerse---Verse-of-The-Day-Version-1.0.2/",
-  "/WeVerse---Verse-of-The-Day-Version-1.0.2/index.html",
-  "/WeVerse---Verse-of-The-Day-Version-1.0.2/about.html",
-  "/WeVerse---Verse-of-The-Day-Version-1.0.2/faq.html",
-  "/WeVerse---Verse-of-The-Day-Version-1.0.2/jesus-paid-it-all-piano-improvisation-314836.mp3",
-  "/WeVerse---Verse-of-The-Day-Version-1.0.2/manifest.json",
-  "/WeVerse---Verse-of-The-Day-Version-1.0.2/icon-192.png",
-  "/WeVerse---Verse-of-The-Day-Version-1.0.2/icon-512.png"
+  "./",
+  "index.html",
+  "about.html",
+  "faq.html",
+  "jesus-paid-it-all-piano-improvisation-314836.mp3",
+  "manifest.json",
+  "icon-192.png",
+  "icon-512.png"
 ];
 
 self.addEventListener("install", (event) => {
