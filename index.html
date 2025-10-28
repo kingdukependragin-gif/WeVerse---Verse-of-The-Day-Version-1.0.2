@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bible Verse of the Day</title>
 
-  <!-- 🌐 PWA integration -->
-  <link rel="manifest" href="manifest.json">
+  <!-- ✅ PWA Setup -->
+  <link rel="manifest" href="/WeVerse---Verse-of-The-Day-Version-1.0.2/manifest.json">
   <meta name="theme-color" content="#4caf50">
-  <link rel="icon" href="icons/icon-192.png" type="image/png">
 
   <style>
     body {
@@ -226,7 +225,7 @@
 
     function shareToFacebook() {
       const text = verseDisplay.textContent;
-      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=https://example.com&quote=${encodeURIComponent(text)}`;
+      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=https://kingdukependragin-gif.github.io/WeVerse---Verse-of-The-Day-Version-1.0.2/&quote=${encodeURIComponent(text)}`;
       window.open(fbUrl, '_blank');
     }
 
@@ -273,12 +272,17 @@
 
     fetchVerse();
 
-    // ✅ Register Service Worker for PWA
+    // ✅ Register Service Worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js')
-      .then(() => console.log('✅ Service Worker registered'))
-      .catch(err => console.log('❌ SW registration failed:', err));
+      navigator.serviceWorker.register('/WeVerse---Verse-of-The-Day-Version-1.0.2/service-worker.js')
+        .then(() => console.log('Service Worker registered successfully!'))
+        .catch(err => console.log('Service Worker registration failed:', err));
     }
+
+    // ✅ Optional install alert
+    window.addEventListener('appinstalled', () => {
+      alert('🎉 WeVerse has been installed on your device!');
+    });
   </script>
 </body>
 </html>
