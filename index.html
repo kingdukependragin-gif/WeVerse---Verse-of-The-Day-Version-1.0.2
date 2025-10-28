@@ -6,7 +6,7 @@
   <title>Bible Verse of the Day</title>
 
   <!-- ✅ PWA Setup -->
-  <link rel="manifest" href="/WeVerse---Verse-of-The-Day-Version-1.0.2/manifest.json">
+  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4caf50">
 
   <style>
@@ -274,7 +274,7 @@
 
     // ✅ Register Service Worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/WeVerse---Verse-of-The-Day-Version-1.0.2/service-worker.js')
+      navigator.serviceWorker.register('./service-worker.js')
         .then(() => console.log('Service Worker registered successfully!'))
         .catch(err => console.log('Service Worker registration failed:', err));
     }
@@ -285,4 +285,4 @@
     });
   </script>
 </body>
-</html>
+    </html>
