@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bible Verse of the Day</title>
+
+  <!-- 🌐 PWA integration -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4caf50">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, #f5f7fa, #c3cfe2);
+      margin: 0;
+      overflow-x: hidden;
+      color: #111;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+
+    body.dark {
+      background: #111;
+      color: #fff;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      background: #222;
+      color: white;
+      padding: 10px 15px;
+    }
+
+    .menu-btn {
+      font-size: 26px;
+      cursor: pointer;
+      margin-right: 15px;
+      transition: opacity 0.4s ease;
+      z-index: 1001;
+    }
+
+    .menu-btn.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #333;
+      color: white;
+      transition: left 0.3s ease;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 1000;
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .close-btn {
+      font-size: 22px;
+      cursor: pointer;
+      color: #fff;
+      background: transparent;
+      border: none;
+      float: right;
+      transition: transform 0.2s ease;
+    }
+
+    .close-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      display: none;
+      z-index: 900;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
+    .sidebar h2 {
+      margin-top: 0;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 10px 0;
+      transition: color 0.2s ease;
+    }
+
+    .sidebar a:hover {
+      color: #1e88e5;
+    }
+
+    main {
+      text-align: center;
+      margin-top: 60px;
+      padding: 20px;
+      transition: color 0.5s ease;
+    }
+
+    button {
+      background: #1e88e5;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #1565c0;
+    }
+
+    .loading {
+      font-style: italic;
+      opacity: 0.8;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
+    }
+
+    audio {
+      transition: volume 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="menu-btn" id="menuBtn">☰</div>
+    <h2>Bible Verse of the Day</h2>
+  </header>
+
+  <div class="sidebar" id="sidebar">
+    <h2>
+      📖 Menu
+      <button class="close-btn" id="closeBtn">✕</button>
+    </h2>
+    <a href="#" onclick="toggleTheme()">🌗 Toggle Dark/Light</a>
+    <a href="about.html">ℹ️ About</a>
+    <a href="faq.html">❓ FAQ</a>
+    <a href="#" onclick="toggleMusic()">🎵 Music On/Off</a>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main>
+    <h1>Bible Verse</h1>
+    <p id="verse" class="loading">Loading verse...</p>
+    <button onclick="fetchVerse()">🔁 Refresh Verse</button>
+    <button onclick="shareToFacebook()">📤 Share on Facebook</button>
+  </main>
+
+  <audio id="bgMusic" loop>
+    <source src="jesus-paid-it-all-piano-improvisation-314836.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const closeBtn = document.getElementById('closeBtn');
+    const verseDisplay = document.getElementById('verse');
+    const body = document.body;
+    const bgMusic = document.getElementById('bgMusic');
+    let musicPlaying = false;
+
+    menuBtn.addEventListener('click', () => {
+      sidebar.classList.add('open');
+      overlay.classList.add('active');
+      menuBtn.classList.add('hidden');
+    });
+
+    closeBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+      menuBtn.classList.remove('hidden');
+    }
+
+    async function fetchVerse() {
+      verseDisplay.textContent = 'Loading verse...';
+      verseDisplay.classList.add('loading');
+      try {
+        const res = await fetch('https://labs.bible.org/api/?passage=random&type=json');
+        const data = await res.json();
+        const verse = `${data[0].bookname} ${data[0].chapter}:${data[0].verse} — ${data[0].text}`;
+        verseDisplay.textContent = verse;
+      } catch (err) {
+        verseDisplay.textContent = 'Failed to load verse.';
+      } finally {
+        verseDisplay.classList.remove('loading');
+      }
+    }
+
+    function shareToFacebook() {
+      const text = verseDisplay.textContent;
+      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=https://example.com&quote=${encodeURIComponent(text)}`;
+      window.open(fbUrl, '_blank');
+    }
+
+    function toggleTheme() {
+      body.classList.toggle('dark');
+    }
+
+    function toggleMusic() {
+      if (musicPlaying) {
+        fadeOut(bgMusic);
+        musicPlaying = false;
+        alert("🎵 Music turned OFF");
+      } else {
+        bgMusic.volume = 0;
+        bgMusic.play();
+        fadeIn(bgMusic);
+        musicPlaying = true;
+        alert("🎵 Music turned ON");
+      }
+    }
+
+    function fadeIn(audio) {
+      let vol = 0;
+      const fade = setInterval(() => {
+        if (vol < 1) {
+          vol += 0.1;
+          audio.volume = vol;
+        } else clearInterval(fade);
+      }, 100);
+    }
+
+    function fadeOut(audio) {
+      let vol = 1;
+      const fade = setInterval(() => {
+        if (vol > 0) {
+          vol -= 0.1;
+          audio.volume = vol;
+        } else {
+          clearInterval(fade);
+          audio.pause();
+        }
+      }, 100);
+    }
+
+    fetchVerse();
+
+    // ✅ Register Service Worker for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service-worker.js')
+      .then(() => console.log('✅ Service Worker registered'))
+      .catch(err => console.log('❌ SW registration failed:', err));
+    }
+  </script>
+</body>
+</html>

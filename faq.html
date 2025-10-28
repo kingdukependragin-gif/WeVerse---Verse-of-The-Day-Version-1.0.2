@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ - Bible Verse of the Day</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, #f5f7fa, #c3cfe2);
+      margin: 0;
+      color: #111;
+      transition: background 0.5s ease, color 0.5s ease;
+      padding: 20px;
+    }
+    body.dark {
+      background: #111;
+      color: white;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      background: #222;
+      color: white;
+      padding: 10px 15px;
+    }
+    a {
+      text-decoration: none;
+      color: #1e88e5;
+      font-weight: 600;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    .faq-item {
+      margin-bottom: 20px;
+    }
+    .faq-item h3 {
+      margin: 0;
+      color: #1e88e5;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" style="color:white; font-size:22px;">←</a>
+    <h2 style="margin-left:15px;">FAQ</h2>
+  </header>
+
+  <main>
+    <h1>Frequently Asked Questions</h1>
+    <div class="faq-item">
+      <h3>📖 Where do the Bible verses come from?</h3>
+      <p>The app uses a free public API from <code>labs.bible.org</code> to provide a random verse each time.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>🌙 How do I change between light and dark mode?</h3>
+      <p>Just open the menu (☰) and tap <strong>Toggle Dark/Light</strong> to switch themes instantly.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>🎵 Can I play or stop the music?</h3>
+      <p>Yes! You can turn on or off the background instrumental from the sidebar menu. (still in work in progress tho)</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>📅 How often do verses update?</h3>
+      <p>You can tap the <strong>Refresh Verse</strong> button anytime to load a new random verse.</p>
+    </div>
+  </main>
+</body>
+</html>
